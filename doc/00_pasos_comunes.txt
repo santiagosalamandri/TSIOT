@@ -1,0 +1,116 @@
+## instalar linux mint 20 mate
+
+## eliminar vía el menú todas las aplicaciones superfluas (casi 1G5)
+#  celluloid
+#  pix
+#  thunderbird
+#  transmission
+#  rhythmbox
+
+sudo apt --autoremove libreoffice-common
+
+sudo apt update
+
+sudo apt upgrade
+
+sudo apt clean
+
+sudo reboot
+
+sudo apt install vim tree openssh-server dirdiff git git
+
+sudo apt remove docker docker-engine docker.io containerd runc
+
+sudo apt install apt-transport-https ca-certificates curl gnupg-agent software-properties-common
+
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+
+sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable"
+
+sudo apt update
+
+sudo apt install docker-ce docker-ce-cli containerd.io docker-compose
+
+sudo addgroup "$USER" docker
+
+curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
+
+sudo apt install nodejs
+
+sudo setcap CAP_NET_BIND_SERVICE=+eip /usr/bin/dockerd
+
+# logout/login
+
+
+## setup para selenium
+
+
+cat << EOF | sudo tee --append /etc/hosts > /dev/null
+127.0.0.1       sitio1
+127.0.0.1       sitio2
+127.0.0.1       sensor
+EOF
+
+
+
+git clone 
+
+tar -xf dump.tgz
+
+
+chmod 0700 sslcert
+
+
+cd sslcert
+
+
+
+openssl req -new -x509 -extensions v3_ca -keyout private/seleniumCAkey.pem -out seleniumCAcert.pem -days 365 -config ./openssl.cnf
+# Elegir un password 4x8mslRQ7Z
+
+openssl req -new -nodes -out "sitio1-req.pem" -keyout "private/sitio1-key.pem" -config ./openssl.cnf
+# Common Name -> sitio1
+
+openssl req -new -nodes -out "sitio2-req.pem" -keyout "private/sitio2-key.pem" -config ./openssl.cnf
+# Common Name -> sitio2
+
+
+openssl req -new -nodes -out "sensor-req.pem" -keyout "private/sensor-key.pem" -config ./openssl.cnf
+# Common Name -> sensor
+
+
+openssl ca -md sha256 -out "sitio1-cert.pem" -config ./openssl.cnf -infiles "sitio1-req.pem"
+# password yes yes
+
+openssl ca -md sha256 -out "sitio2-cert.pem" -config ./openssl.cnf -infiles "sitio2-req.pem"
+# password yes yes
+
+openssl ca -md sha256 -out "sensor-cert.pem" -config ./openssl.cnf -infiles "sensor-req.pem"
+# password yes yes
+
+cd ../sensors
+npm init
+npm install express --save
+
+cd ../sslcerts
+
+cp sitio1-cert.pem sitio2-cert.pem sensor-cert.pem private/sitio1-key.pem private/sitio2-key.pem private/sensor-key.pem ../sites/certs/
+
+cd ../sites
+
+docker build -t testbench/static:0.0.1 .
+cd ../sensors
+
+docker build -t testbench/dynamic:0.0.1 .
+
+cd ..
+
+docker-compose up
+
+
+
+
+
+
+
+

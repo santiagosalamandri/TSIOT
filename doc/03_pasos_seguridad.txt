@@ -1,0 +1,15 @@
+sudo apt install wireshark nmap
+   Shoud non-superusers be able to capture packets? -> <Yes>
+
+sudo addgroup "$USER" wireshark
+
+## logout/login
+
+## wordpress
+
+sudo apt install ruby-dev
+sudo gem install wpscan
+
+wpscan --url https://www.angrybirds.com
+
+
