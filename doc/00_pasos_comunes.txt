@@ -17,7 +17,7 @@ sudo apt clean
 
 sudo reboot
 
-sudo apt install vim tree openssh-server dirdiff git git
+sudo apt install vim tree openssh-server dirdiff git shunit2
 
 sudo apt remove docker docker-engine docker.io containerd runc
 
