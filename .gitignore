@@ -1,2 +1,6 @@
 node_modules
 *.pem
+sslcert/certindex.txt.attr
+sslcert/certindex.txt.attr.old
+sslcert/certindex.txt.old
+sslcert/serial.old

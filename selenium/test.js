@@ -1,18 +1,27 @@
 const {Builder, By, until, Key, Capabilities} = require('selenium-webdriver');
 const {expect} = require('chai');
 var firefox = require('selenium-webdriver/firefox');
-let browser = 'firefox';
+//var profilePath = '/home/tsiot/.mozilla/firefox/zoa6kvyg.default';
+var profilePath = '/home/tsiot/.mozilla/firefox/zcyqcysq.default-release';
+let TIMEOUT=10000;
 
-describe('test multi site with ' + browser, function() {
+describe('test multi site with firefox', function() {
    let driver;
+
+   const options = new firefox.Options();
+   options.setProfile(profilePath);
+
    before(async function() {
-      driver = new Builder().withCapabilities(
-         Capabilities.firefox().set("acceptInsecureCerts", true)
-      ).build();
+/*      driver = new Builder().withCapabilities(
+	       Capabilities.firefox().set("acceptInsecureCerts", true)
+      ).build();*/
+      driver = new Builder().forBrowser('firefox').
+		   setFirefoxOptions(options).build();	   
+
    });
 
    it('check reset is working', async function() {
-      this.timeout(10000);
+      this.timeout(TIMEOUT);
       await driver.get('https://sensor/reset');
       
       driver.findElement(By.id('action')).then(element=>{
@@ -21,7 +30,7 @@ describe('test multi site with ' + browser, function() {
    });
 
    it('check that sitio1 does not generate hits', async function() {
-      this.timeout(10000);
+      this.timeout(TIMEOUT);
       await driver.get('https://sensor/reset');
       await driver.get('https://sitio1/');
       await driver.get('https://sensor/hitcount');
@@ -31,7 +40,7 @@ describe('test multi site with ' + browser, function() {
    });
 
    it('check that sitio2 generates two hit', async function() {
-      this.timeout(10000);
+      this.timeout(TIMEOUT);
       await driver.get('https://sensor/reset');
       await driver.get('https://sitio2/');
       await driver.get('https://sensor/hitcount');

@@ -1,5 +1,5 @@
 sudo apt install wireshark nmap
-   Shoud non-superusers be able to capture packets? -> <Yes>
+#  Shoud non-superusers be able to capture packets? -> <Yes>
 
 sudo addgroup "$USER" wireshark
 

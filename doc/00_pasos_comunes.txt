@@ -53,10 +53,9 @@ EOF
 
 
 
-git clone 
+git clone https://github.com/cpantel/TSIOT.git
 
-tar -xf dump.tgz
-
+cd TSIOT
 
 chmod 0700 sslcert
 
@@ -80,17 +79,24 @@ openssl req -new -nodes -out "sensor-req.pem" -keyout "private/sensor-key.pem" -
 
 
 openssl ca -md sha256 -out "sitio1-cert.pem" -config ./openssl.cnf -infiles "sitio1-req.pem"
-# password yes yes
+# password
+# yes
+# yes
 
 openssl ca -md sha256 -out "sitio2-cert.pem" -config ./openssl.cnf -infiles "sitio2-req.pem"
-# password yes yes
+# password
+# yes
+# yes
 
 openssl ca -md sha256 -out "sensor-cert.pem" -config ./openssl.cnf -infiles "sensor-req.pem"
-# password yes yes
+# password
+# yes
+# yes
 
 cd ../sensors
-npm init
-npm install express --save
+# npm init
+# npm install express --save
+npm install
 
 cd ../sslcerts
 
@@ -108,6 +114,43 @@ cd ..
 docker-compose up
 
 
+urls to test:
+
+wget --no-check-certificate -O- https://sensor/hitcount 2>/dev/null | grep div
+
+#expected: 
+<div id="count">-1</div>  
+
+wget --no-check-certificate -O- https://sitio2 2>/dev/null | grep title
+
+#expected: 
+    <title>Sitio de prueba</title>
+
+
+cd selenium
+
+# npm init
+# npm install --save mocha
+# npm install --save chai
+# npm install --save geckodriver
+# npm install --save selenium-webdriver
+npm install
+
+
+npm test
+
+## agregar seleniumCAkey.pem a firefox
+# about:preferences
+# find in preferences-> cert
+# View Certificates
+# Authorities
+# Import
+# TSIOT/sslcert/seleniumCAcert.pem
+# trust this CA to identify websites
+# ok ok
+
+
+# 
 
 
 
