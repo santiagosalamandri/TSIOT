@@ -51,7 +51,12 @@ cat << EOF | sudo tee --append /etc/hosts > /dev/null
 127.0.0.1       sensor
 EOF
 
-
+cat << EOF > ~/.gitconfig
+[alias]
+    lol = log --graph --decorate --pretty=oneline --abbrev-commit
+    lola = log --graph --decorate --pretty=oneline --abbrev-commit --all
+    lolg = log --graph --decorate --pretty=format:'%Cgreen %ci %Cblue %h %Cred %d %Creset %s'
+EOF
 
 git clone https://github.com/cpantel/TSIOT.git
 
@@ -134,6 +139,7 @@ cd selenium
 # npm install --save chai
 # npm install --save geckodriver
 # npm install --save selenium-webdriver
+## npm install --save firefox-profile 
 npm install
 
 
