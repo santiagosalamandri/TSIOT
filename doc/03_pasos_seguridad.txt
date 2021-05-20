@@ -7,7 +7,12 @@ sudo addgroup "$USER" wireshark
 
 ## wordpress
 
-sudo apt install ruby-dev
+#OPCION mint
+   sudo apt install ruby-dev
+
+#OPCION ubuntu
+   sudo apt install ruby-dev ubuntu-dev-tools
+
 sudo gem install wpscan
 
 
