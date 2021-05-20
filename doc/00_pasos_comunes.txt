@@ -39,7 +39,7 @@ sudo apt install nodejs
 
 sudo setcap CAP_NET_BIND_SERVICE=+eip /usr/bin/dockerd
 
-# logout/login
+# efectuar un logout/login para que docker funcione sin sudo ni root
 
 
 ## setup para selenium
@@ -74,14 +74,15 @@ openssl req -new -x509 -extensions v3_ca -keyout private/seleniumCAkey.pem -out 
 
 openssl req -new -nodes -out "sitio1-req.pem" -keyout "private/sitio1-key.pem" -config ./openssl.cnf
 # Common Name -> sitio1
+# resto enter
 
 openssl req -new -nodes -out "sitio2-req.pem" -keyout "private/sitio2-key.pem" -config ./openssl.cnf
 # Common Name -> sitio2
-
+# resto enter
 
 openssl req -new -nodes -out "sensor-req.pem" -keyout "private/sensor-key.pem" -config ./openssl.cnf
 # Common Name -> sensor
-
+# resto enter
 
 openssl ca -md sha256 -out "sitio1-cert.pem" -config ./openssl.cnf -infiles "sitio1-req.pem"
 # password
@@ -134,6 +135,7 @@ wget --no-check-certificate -O- https://sitio2 2>/dev/null | grep title
 
 cd selenium
 
+# si no hubieras hecho el git clone, tendrías que haber ejecutado estos comandos, pero ya están en el package.json
 # npm init
 # npm install --save mocha
 # npm install --save chai
@@ -142,7 +144,7 @@ cd selenium
 ## npm install --save firefox-profile 
 npm install
 
-
+# va a fallar por falta de CA
 npm test
 
 ## agregar seleniumCAkey.pem a firefox
@@ -154,9 +156,9 @@ npm test
 # TSIOT/sslcert/seleniumCAcert.pem
 # trust this CA to identify websites
 # ok ok
+# en los bookmarks tenés las urls necesarias
 
-
-# 
+npm test
 
 
 

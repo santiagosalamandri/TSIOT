@@ -1,4 +1,4 @@
-sudo apt install wireshark nmap
+sudo apt install wireshark nmap testssl.sh
 #  Shoud non-superusers be able to capture packets? -> <Yes>
 
 sudo addgroup "$USER" wireshark
@@ -10,6 +10,20 @@ sudo addgroup "$USER" wireshark
 sudo apt install ruby-dev
 sudo gem install wpscan
 
+
+## burpsuite
+https://portswigger.net/burp/releases/download?product=community&version=2021.5.1&type=Linux
+sh burpsuite_community_linux_v2021_5_1.sh
+
+
+## zap proxy
+https://github.com/zaproxy/zaproxy/releases/download/v2.10.0/ZAP_2_10_0_unix.sh
+sudo sh ZAP_2_10_0_unix.sh
+
+# ejecuciones
+
 wpscan --url https://www.angrybirds.com
+
+testssl https://sensor
 
 
