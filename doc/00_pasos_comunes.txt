@@ -1,4 +1,4 @@
-## instalar linux mint 20 mate
+## OPCION instalar linux mint 20 mate
 
 ## eliminar vía el menú todas las aplicaciones superfluas (casi 1G5)
 #  celluloid
@@ -40,11 +40,20 @@ sudo setcap CAP_NET_BIND_SERVICE=+eip /usr/bin/dockerd
 
 
 
-## instalar ubuntu server
+## OPCION instalar ubuntu server
 ## Featured server snaps
 ##  [*] docker
 
-sudo apt install xorg openbox firefox
+## SUBOPCION instalar entorno gráfico
+   sudo apt install xorg openbox firefox
+
+## SUBOPCION no instalar entorno gráfico
+#  ahorra un GB, pero luego hay que usar
+#  ssh -X tsiot@IP 
+#  y ahí ejecutar los programas gráficos
+#  en el caso de wireshark filtrar el tráfico del puerto 22 
+
+   sudo apt install  firefox
 
 sudo groupadd docker
 
