@@ -138,10 +138,10 @@ Ahorra un GB pero luego hay que acceder desde una mÃ¡quina que tenga entorno grÃ
 # Probar lo hecho
 - Acceso a los sites
   -     $ wget --no-check-certificate -O- https://sensor/hitcount 2>/dev/null | grep div
-Esperamos:
+  Esperamos:
   -     <div id="count">-1</div>
   -     $ wget --no-check-certificate -O- https://sitio2 2>/dev/null | grep title
-Esperamos:
+  Esperamos:
   -     <title>Sitio de prueba</title>
 
 - Ejecutar firefox para que cree los perfiles y cerrarlo
