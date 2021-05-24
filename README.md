@@ -81,6 +81,8 @@ Ahorra un GB pero luego hay que acceder desde una máquina que tenga entorno gr�
   -     $ openssl req -new -x509 -extensions v3_ca -keyout private/seleniumCAkey.pem -out seleniumCAcert.pem -days 365 -config ./openssl.cnf
 Elegir un password 4x8mslRQ7Z
 
+**Precaución: no usar este password pues aunque es el riesgo es bajo, permite firmar certificados en los que luego el sistema va a confiar.**
+
 Resto enter o a gusto
 
   -     $ openssl req -new -nodes -out "sitio1-req.pem" -keyout "private/sitio1-key.pem" -config ./openssl.cnf
