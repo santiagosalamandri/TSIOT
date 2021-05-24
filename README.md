@@ -54,11 +54,20 @@ Ahorra un GB pero luego hay que acceder desde una máquina que tenga entorno gr�
 
 - Setup para pruebas con Selenium
 
-        $ cat << EOF | sudo tee --append /etc/hosts > /dev/null
-        127.0.0.1       sitio1
-        127.0.0.1       sitio2
-        127.0.0.1       sensor
-        EOF
+      $ cat << EOF | sudo tee --append /etc/hosts > /dev/null
+      127.0.0.1       sitio1
+      127.0.0.1       sitio2
+      127.0.0.1       sensor
+      EOF
+- Alias cómodo para git
+
+      $ cat << EOF > ~/.gitconfig
+      [alias]
+            lol = log --graph --decorate --pretty=oneline --abbrev-commit
+            lola = log --graph --decorate --pretty=oneline --abbrev-commit --all
+            lolg = log --graph --decorate --pretty=format:'%Cgreen %ci %Cblue %h %Cred %d %Creset %s'
+      EOF
+
 - Obtener el proyecto
   -     $git clone https://github.com/cpantel/TSIOT.git
 
