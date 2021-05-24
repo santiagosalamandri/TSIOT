@@ -78,7 +78,7 @@ Ahorra un GB pero luego hay que acceder desde una máquina que tenga entorno gr�
   -     $ openssl req -new -x509 -extensions v3_ca -keyout private/seleniumCAkey.pem -out seleniumCAcert.pem -days 365 -config ./openssl.cnf
   Elegir un password 4x8mslRQ7Z
 
-  **Precaución: no usar este password pues aunque es el riesgo es bajo, permite firmar certificados en los que luego el sistema va a confiar.**
+  **Precaución: no usar este password pues aunque el riesgo es bajo, permite firmar certificados en los que luego el sistema va a confiar.**
 
   Resto enter o a gusto
   -     $ openssl req -new -nodes -out "sitio1-req.pem" -keyout "private/sitio1-key.pem" -config ./openssl.cnf
@@ -137,7 +137,7 @@ Ahorra un GB pero luego hay que acceder desde una máquina que tenga entorno gr�
 
 # Probar lo hecho
 - Acceso a los sites
-  -       -     $ wget --no-check-certificate -O- https://sensor/hitcount 2>/dev/null | grep div
+  -     $ wget --no-check-certificate -O- https://sensor/hitcount 2>/dev/null | grep div
 Esperamos:
   -     <div id="count">-1</div>
   -     $ wget --no-check-certificate -O- https://sitio2 2>/dev/null | grep title
@@ -162,5 +162,5 @@ Va a fallar por falta de CA
   - ok ok
   - en los bookmarks tenés las urls necesarias
 
-  - $ npm test
+- $ npm test
 
