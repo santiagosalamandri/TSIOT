@@ -1,3 +1,4 @@
+
 # Sistema operativo
 ## Opción: Linux Mint 20 Mate
 
@@ -8,7 +9,7 @@
   - transmission
   - rhythmbox
 - Eliminar libreoffice
- 
+
   -      $ sudo apt --autoremove libreoffice-common
 
 - Upgrade e instalación de algunas herramientas útiles
@@ -16,7 +17,7 @@
   -     $ sudo apt upgrade
   -     $ sudo apt clean
   -     $ sudo apt install vim tree openssh-server dirdiff git shunit2
-  
+
 - Instalación de docker según su manual
   -     $ sudo apt remove docker docker-engine docker.io containerd runc
   -     $ sudo apt install apt-transport-https ca-certificates curl gnupg-agent software-properties-common
@@ -67,7 +68,6 @@ Ahorra un GB pero luego hay que acceder desde una máquina que tenga entorno gr�
             lola = log --graph --decorate --pretty=oneline --abbrev-commit --all
             lolg = log --graph --decorate --pretty=format:'%Cgreen %ci %Cblue %h %Cred %d %Creset %s'
       EOF
-
 - Obtener el proyecto
   -     $git clone https://github.com/cpantel/TSIOT.git
 
@@ -108,25 +108,26 @@ Ingresar el password, yes, yes
   -     $ openssl ca -md sha256 -out "sensor-cert.pem" -config ./openssl.cnf -infiles "sensor-req.pem"
 Ingresar el password, yes, yes
   -     $ cd ../sensors
-No hace falta npm init
-No hace falta npm install express --save
+Si no hubieras hecho el git clone, tendrías que haber ejecutado los comandos comentados, pero ya están en el package.json
+  -     $ #npm init
+  -     $ #npm install express --save
   -     $ npm install
-
+- Copiar certificados a los sitios
   -     $ cd ../sslcerts
 
   -     $ cp sitio1-cert.pem sitio2-cert.pem sensor-cert.pem private/sitio1-key.pem private/sitio2-key.pem private/sensor-key.pem ../sites/certs/
 
   -     $ cd ../sites
-
+- Construir imagenes
   -     $ docker build -t testbench/static:0.0.1 .
   -     $ cd ../sensors
 
   -     $ docker build -t testbench/dynamic:0.0.1 .
 
   -     $ cd ..
-
+- Iniciar docker
   -     $ docker-compose up
-
+- En otra terminal
 
   -     $ cd selenium
 
@@ -136,16 +137,16 @@ Si no hubieras hecho el git clone, tendrías que haber ejecutado los comandos co
   -     $ #npm install --save chai
   -     $ #npm install --save geckodriver
   -     $ #npm install --save selenium-webdriver
-  -     $ #npm install --save firefox-profile 
+  -     $ #npm install --save firefox-profile
   -     $ npm install
 
 # Probar lo hecho
 - Acceso a los sites
   -       -     $ wget --no-check-certificate -O- https://sensor/hitcount 2>/dev/null | grep div
 Esperamos:
-  -     <div id="count">-1</div>  
+  -     <div id="count">-1</div>
   -     $ wget --no-check-certificate -O- https://sitio2 2>/dev/null | grep title
-Esperamos: 
+Esperamos:
   -     <title>Sitio de prueba</title>
 
 - Ejecutar firefox para que cree los perfiles y cerrarlo
@@ -167,3 +168,4 @@ Va a fallar por falta de CA
   - en los bookmarks tenés las urls necesarias
 
   - $ npm test
+
