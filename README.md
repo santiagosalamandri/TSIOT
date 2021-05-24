@@ -75,40 +75,35 @@ Ahorra un GB pero luego hay que acceder desde una máquina que tenga entorno gr�
   -     $ cd TSIOT
   -     $ chmod 0700 sslcert
   -     $ cd sslcert
-
-
-
   -     $ openssl req -new -x509 -extensions v3_ca -keyout private/seleniumCAkey.pem -out seleniumCAcert.pem -days 365 -config ./openssl.cnf
-Elegir un password 4x8mslRQ7Z
+  Elegir un password 4x8mslRQ7Z
 
-**Precaución: no usar este password pues aunque es el riesgo es bajo, permite firmar certificados en los que luego el sistema va a confiar.**
+  **Precaución: no usar este password pues aunque es el riesgo es bajo, permite firmar certificados en los que luego el sistema va a confiar.**
 
-Resto enter o a gusto
-
+  Resto enter o a gusto
   -     $ openssl req -new -nodes -out "sitio1-req.pem" -keyout "private/sitio1-key.pem" -config ./openssl.cnf
-Common Name -> sitio1
+  Common Name -> sitio1
 
-Resto enter
+  Resto enter
 
   -     $ openssl req -new -nodes -out "sitio2-req.pem" -keyout "private/sitio2-key.pem" -config ./openssl.cnf
-Common Name -> sitio2
+  Common Name -> sitio2
 
-Resto enter
+  Resto enter
 
   -     $ openssl req -new -nodes -out "sensor-req.pem" -keyout "private/sensor-key.pem" -config ./openssl.cnf
-Common Name -> sensor, resto enter
-
+  Common Name -> sensor, resto enter
 
   -     $ openssl ca -md sha256 -out "sitio1-cert.pem" -config ./openssl.cnf -infiles "sitio1-req.pem"
-Ingresar el password, yes, yes
+  Ingresar el password, yes, yes
 
   -     $ openssl ca -md sha256 -out "sitio2-cert.pem" -config ./openssl.cnf -infiles "sitio2-req.pem"
-Ingresar el password, yes, yes
+  Ingresar el password, yes, yes
 
   -     $ openssl ca -md sha256 -out "sensor-cert.pem" -config ./openssl.cnf -infiles "sensor-req.pem"
-Ingresar el password, yes, yes
+  Ingresar el password, yes, yes
   -     $ cd ../sensors
-Si no hubieras hecho el git clone, tendrías que haber ejecutado los comandos comentados, pero ya están en el package.json
+  Si no hubieras hecho el git clone, tendrías que haber ejecutado los comandos comentados, pero ya están en el package.json
   -     $ #npm init
   -     $ #npm install express --save
   -     $ npm install
@@ -131,7 +126,7 @@ Si no hubieras hecho el git clone, tendrías que haber ejecutado los comandos co
 
   -     $ cd selenium
 
-Si no hubieras hecho el git clone, tendrías que haber ejecutado los comandos comentados, pero ya están en el package.json
+  Si no hubieras hecho el git clone, tendrías que haber ejecutado los comandos comentados, pero ya están en el package.json
   -     $ #npm init
   -     $ #npm install --save mocha
   -     $ #npm install --save chai
