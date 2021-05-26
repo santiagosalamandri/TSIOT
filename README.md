@@ -148,8 +148,8 @@ Ahorra un GB pero luego hay que acceder desde una máquina que tenga entorno gr�
   - corregir profilePath en test.js
   - eliminar /home/tsiot/.mozilla/firefox/?????.default-release/lock
 
-Va a fallar por falta de CA
-  - $ npm test
+- Ejecutar el test, va a fallar por falta de CA
+  -     $ npm test
 
 - Agregar seleniumCAkey.pem a firefox
   - about:preferences
@@ -162,5 +162,6 @@ Va a fallar por falta de CA
   - ok ok
   - en los bookmarks tenés las urls necesarias
 
-- $ npm test
+Reejecutar el test
+  -     $ npm test
 
