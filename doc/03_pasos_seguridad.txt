@@ -32,3 +32,33 @@ wpscan --url https://www.angrybirds.com
 testssl https://sensor
 
 
+TLS Sniffing
+
+touch /home/$USER/sslkeylog.log
+
+wireshark
+preferences
+protocols
+SSL
+(Pre)-Master-Secret log filename <= /home/$USER/sslkeylog.log
+RSA keys list <= 127.0.0.1 443 http /home/$USER/sslcert/private/sitio1-key.pem
+
+Capture loopback
+
+Firefox
+
+export SSLKEYLOGFILE=/home/$USER/sslkeylog.log firefox
+
+
+
+
+
+Wireshark
+
+tcp.port == 443 && ssl.record.length > 66
+
+
+https://seguridad-agile.blogspot.com/2019/09/diagnostico-de-http-headers-con-polymer.html
+
+
+
