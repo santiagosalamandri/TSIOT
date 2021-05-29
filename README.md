@@ -1,3 +1,34 @@
+# Taller de testeo de redirecciones e inclusiones multi sitio con selenium y docker
+
+## Descripción
+
+Mostraré cómo se puede armar un entorno de test de comportamiento de páginas web desplegadas en distintos sitios utilizando linux, docker, docker-compose, nginx, openSSL,  node, express, html, javascript, ruby, selenium y wireshark. Sirve para probar en ambientes previos código productivo sin modificarlo en absoluto, basta de if (desa), a sniffear el tráfico TLS y mockear toda la Internet si hace falta.
+
+## Requisitos
+Conocimiento superficial de docker, node, html y javascript o mucha curiosidad.
+
+
+Para la instalación le he dado los siguientes recursos y luego para operar los valores entre paréntesis:
+
+ - 4 CPUs -> (1 CPU)
+ - PAE/NX
+ - 16GB RAM -> ( 4GB, quizás 2Gb)
+ - disco de 30GB -> (12 GB)
+
+Puede ser útil o necesario instalar las gues additions en el caso de usar VirtualBox
+
+ - Conectar devices->guest additions
+ - abrir terminal en cd
+ - sudo sh VBoxLinuxAdditions.run
+ - reboot
+
+Las instrucciones para la instalación de docker fueron tomadas  de https://docs.docker.com/install/linux/docker-ce/ubuntu/, en caso de usar Linux Mint 19 reemplazar "focal stable" con "bionic stable".
+
+Las instrucciones para la instalación de node fueron tomadas de 
+- https://nodejs.org/en/download/
+- https://nodejs.org/en/download/package-manager/#debian-and-ubuntu-based-linux-distributions-enterprise-linux-fedora-and-snap-packages
+- https://github.com/nodesource/distributions/blob/master/README.md 
+
 
 # Sistema operativo
 ## Opción: Linux Mint 20 Mate
@@ -70,6 +101,15 @@ Ahorra un GB pero luego hay que acceder desde una máquina que tenga entorno gr�
       EOF
 - Obtener el proyecto
   -     $git clone https://github.com/cpantel/TSIOT.git
+
+  Si no hubieras hecho el git clone, tendrías que haber ejecutado los comandos comentados.
+  -     $ #mkdir sslcert
+  -     $ #chmod 0700 sslcert
+  -     $ #cd sslcert/
+  -     $ #mkdir certs private newcerts
+  -     $ #echo '100001' > serial
+  -     $ #touch certindex.txt
+
 
 - Generar certificados
   -     $ cd TSIOT
@@ -147,6 +187,8 @@ Ahorra un GB pero luego hay que acceder desde una máquina que tenga entorno gr�
 - Ejecutar firefox para que cree los perfiles y cerrarlo
   - corregir profilePath en test.js
   - eliminar /home/tsiot/.mozilla/firefox/?????.default-release/lock
+  - para elegir el perfil de firefox: **firefox -no-remote -profileManager**
+
 
 - Ejecutar el test, va a fallar por falta de CA
   -     $ npm test
