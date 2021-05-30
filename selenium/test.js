@@ -2,7 +2,7 @@ const {Builder, By, until, Key, Capabilities} = require('selenium-webdriver');
 const {expect} = require('chai');
 var firefox = require('selenium-webdriver/firefox');
 //var profilePath = '/home/tsiot/.mozilla/firefox/zoa6kvyg.default';
-var profilePath = '/home/tsiot/.mozilla/firefox/zcyqcysq.default-release';
+var profilePath = '/home/tsiot/.mozilla/firefox/8297bw4u.default-release';
 let TIMEOUT=10000;
 
 describe('test multi site with firefox', function() {
@@ -39,7 +39,7 @@ describe('test multi site with firefox', function() {
       });
    });
 
-   it('check that sitio2 generates two hit', async function() {
+   it('check that sitio2 generates two hits', async function() {
       this.timeout(TIMEOUT);
       await driver.get('https://sensor/reset');
       await driver.get('https://sitio2/');
