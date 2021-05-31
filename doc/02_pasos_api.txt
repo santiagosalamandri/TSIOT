@@ -1,59 +1,26 @@
-## algo no funciona aún
-
-https://www.postman.com/downloads/
-
-mkdir bin
-cd bin
-tar -xzf ~/Downloads/Postman-linux-x64-8.3.1.tar.gz
-
-sudo npm install -g newman
-
-git clone https://github.com/cpantel/SMAUEC.git
-
-cd SMAUEC
-
-cat << EOF >.env
-POSTGRES_PASSWORD=12345602
-PGADMIN_DEFAULT_EMAIL=admin
-PGADMIN_DEFAULT_PASSWORD=12345601
-EOF
-
-cat << EOF | sudo tee --append /etc/hosts > /dev/null
-172.21.0.1      api-users.smauec.net
-172.21.0.1      api-rules.smauec.net
-172.21.0.1      api-events.smauec.net
-172.21.0.1      www.smauec.net             <- opcional para frontend, no usado aca
-EOF
 
 
-cd secrets
 
-cat << EOF > auth.config.test.js
-module.exports = {
-  secret: "secret-key"
-};
-EOF
-cp db.rule.config.test.js.template db.rule.config.test.js
-cp db.user.config.test.js.template db.user.config.test.js
-cp user.admin.config.test.js.template user.admin.config.test.js
-cd ..
-
-
-cd docker/containers/node  ; docker build -t smauec/node:0.0.1 . ;cd -
-cd docker/containers/pgadmin  ; docker build -t smauec/pgadmin:0.0.1 . ;cd -
-cd docker/containers/postgres  ; docker build -t smauec/postgres:0.0.1 . ;cd -
-cd docker/containers/broker  ; docker build -t smauec/broker:0.0.1 . ;cd -
-cd docker/containers/proxy  ; docker build -t smauec/proxy:0.0.1 . ;cd -
-cd docker/containers/mongo  ; docker build -t smauec/mongo:0.0.1 . ;cd -
-cd api_events ; docker build -t smauec/api-events:0.0.1 . ; cd -
-cd api_rules ; docker build -t smauec/api-rules:0.0.1 . ; cd -
-cd api_users ; docker build -t smauec/api-users:0.0.1 . ; cd -
-cd odata ; docker build -t smauec/odata:0.0.1 . ; cd -
-
-docker-compose -p repo up
 
 ##docker swarm init; # solo una vez
 ##docker stack deploy -c- repo < docker-compose.yml
+
+#obtener ip correcta con 
+
+docker network inspect repo_default | fgrep Subnet
+
+Puede ser necesario eliminar entradas anteriores, no la primera vez
+
+cat << EOF | sudo tee --append /etc/hosts > /dev/null
+172.19.0.1      api-users.smauec.net
+172.19.0.1      api-rules.smauec.net
+172.19.0.1      api-events.smauec.net
+172.19.0.1      www.smauec.net
+EOF
+
+
+
+
 
 
 # diagnósticos

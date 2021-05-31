@@ -30,8 +30,8 @@ Las instrucciones para la instalación de node fueron tomadas de
 - https://github.com/nodesource/distributions/blob/master/README.md 
 
 
-# Sistema operativo
-## Opción: Linux Mint 20 Mate
+## Instalación sistema operativo
+### Opción: Linux Mint 20 Mate
 
 - Tras la instalación, eliminar todas las aplicaciones superfluas (casi 1G5) usando botón derecho sobre el link en el menú
   - celluloid
@@ -60,25 +60,25 @@ Las instrucciones para la instalación de node fueron tomadas de
   -     $ sudo setcap CAP_NET_BIND_SERVICE=+eip /usr/bin/dockerd
   -     $ sudo reboot
 
-## Opción: Ubuntu Server 20.04
+### Opción: Ubuntu Server 20.04
 - cuando ofrece "Featured Server Snaps", elegir docker
-### Subopción: Instalar entorno gráfico
+#### Subopción: Instalar entorno gráfico
   -     $ sudo apt install xorg openbox
 
-### Subopción: No instalar entorno gráfico
+#### Subopción: No instalar entorno gráfico
 Ahorra un GB pero luego hay que acceder desde una máquina que tenga entorno gráfico con:
  -     $ ssh -X tsiot@IP
 
 
 
-### Pasos comunes Ubuntu Server
+#### Pasos comunes Ubuntu Server
 -     $ sudo apt install  firefox
 -     $ sudo groupadd docker
 -     $ sudo usermod -aG docker ${USER}
 -     $ sudo chmod 666 /var/run/docker.sock
 -     $ sudo reboot
 
-# Pasos comunes
+## Instalaciones y configuraciones adicionales
 
 - Instalación node js
   -     $ curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
@@ -175,7 +175,7 @@ Ahorra un GB pero luego hay que acceder desde una máquina que tenga entorno gr�
   -     $ #npm install --save firefox-profile
   -     $ npm install
 
-# Probar lo hecho
+## Probar lo hecho
 - Acceso a los sites
   -     $ wget --no-check-certificate -O- https://sensor/hitcount 2>/dev/null | grep div
   Esperamos:
@@ -206,4 +206,103 @@ Ahorra un GB pero luego hay que acceder desde una máquina que tenga entorno gr�
 
 Reejecutar el test
   -     $ npm test
+
+# Testeo API con postman
+
+- Instalación postman
+  - Descargar Postman
+    - https://www.postman.com/downloads/
+  -     $ mkdir bin
+  -     $ cd bin
+  -     $ tar -xzf ~/Downloads/Postman-linux-x64-8.3.1.tar.gz
+  -     $ cd ..
+  -     $ sudo npm install -g newman
+
+- Configuración de AUT
+
+  -     $ git clone https://github.com/cpantel/SMAUEC.git
+  -     $ cd SMAUEC
+
+      $ cat << EOF >.env
+      POSTGRES_PASSWORD=12345602
+      PGADMIN_DEFAULT_EMAIL=admin
+      PGADMIN_DEFAULT_PASSWORD=12345601
+      EOF
+  -     $ chmod 400 .env
+  -     $ cd secrets
+
+      $ cat << EOF > auth.config.test.js
+      module.exports = {
+        secret: "secret-key"
+      };
+      EOF
+
+  -     $ cp db.rule.config.test.js.template db.rule.config.test.js
+  -     $ cp db.user.config.test.js.template db.user.config.test.js
+  -     $ cp user.admin.config.test.js.template user.admin.config.test.js
+  -     $ cd ..
+
+  -     $ cd docker/containers/proxy    ; docker build -t smauec/proxy:0.0.1 .      ; cd -
+  -     $ cd docker/containers/postgres ; docker build -t smauec/postgres:0.0.1 .   ; cd -
+  -     $ cd docker/containers/mongo    ; docker build -t smauec/mongo:0.0.1 .      ; cd -
+  -     $ cd docker/containers/node     ; docker build -t smauec/node:0.0.1 .       ; cd -
+  -     $ cd api_events                 ; docker build -t smauec/api-events:0.0.1 . ; cd -
+  -     $ cd api_rules                  ; docker build -t smauec/api-rules:0.0.1 .  ; cd -
+  -     $ cd api_users                  ; docker build -t smauec/api-users:0.0.1 .  ; cd -
+  -     $ cd odata                      ; docker build -t smauec/odata:0.0.1 .      ; cd -
+  -     $ #cd docker/containers/broker   ; docker build -t smauec/broker:0.0.1 .     ; cd -
+  -     $ #cd docker/containers/pgadmin  ; docker build -t smauec/pgadmin:0.0.1 .    ; cd -
+
+  Borrar de **proxy/default.conf** las secciones server correspondientes a los **server_name** **pgadmin.smauec.net** y **www.smauec.net**
+
+
+
+  - Iniciar docker
+  -     $ cp ../TSIOT/docker-compose-api.yml
+  -     $ docker-compose -f docker-compose-api.yml -p repo up
+
+  En otra terminal, atención que el último EOF debe estar al comienzo de la línea:
+  -    $ cat << EOF | docker exec -i repo_postgres_1 psql -U postgres
+
+      CREATE ROLE smauec_prod WITH
+        LOGIN
+        NOSUPERUSER
+        INHERIT
+        NOCREATEDB
+        NOCREATEROLE
+        NOREPLICATION;
+
+      CREATE ROLE smauec_test WITH
+        LOGIN
+        NOSUPERUSER
+        INHERIT
+        NOCREATEDB
+        NOCREATEROLE
+        NOREPLICATION
+        ENCRYPTED PASSWORD 'md523d1028eeda62a632fe09998f10cbde4';
+
+      CREATE DATABASE smauec_prod
+        WITH
+          OWNER = smauec_prod
+          ENCODING = 'UTF8'
+          LC_COLLATE = 'en_US.utf8'
+          LC_CTYPE = 'en_US.utf8'
+          TABLESPACE = pg_default
+          CONNECTION LIMIT = -1;
+
+      CREATE DATABASE smauec_test
+        WITH 
+          OWNER = smauec_test
+          ENCODING = 'UTF8'
+          LC_COLLATE = 'en_US.utf8'
+          LC_CTYPE = 'en_US.utf8'
+          TABLESPACE = pg_default
+          CONNECTION LIMIT = -1;
+EOF
+  - Volver a la terminal 1
+  -     ^C
+  
+   
+  - Reiniciar docker
+  -     $ docker-compose -f ../TSIOT/docker-compose-api -p repo up
 
