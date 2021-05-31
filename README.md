@@ -210,15 +210,17 @@ Reejecutar el test
 # Testeo API con postman
 
 - Instalación postman
+  -     $ cd
   - Descargar Postman
     - https://www.postman.com/downloads/
   -     $ mkdir bin
   -     $ cd bin
-  -     $ tar -xzf ~/Downloads/Postman-linux-x64-8.3.1.tar.gz
+  -     $ tar -xzf ~/Downloads/Postman-linux-x64-8.5.1.tar.gz
   -     $ cd ..
   -     $ sudo npm install -g newman
 
 - Configuración de AUT
+  Duda: para ejecutar los test hace falta que se ejecute **npm install** en cada api. ¿Si lo hiciera antes del build y copiara **node_modules**...?
 
   -     $ git clone https://github.com/cpantel/SMAUEC.git
   -     $ cd SMAUEC
@@ -259,7 +261,7 @@ Reejecutar el test
 
 
 - Iniciar docker
-  -     $ cp ../TSIOT/docker-compose-api.yml
+  -     $ cp ../TSIOT/docker-compose-api.yml .
   -     $ docker-compose -f docker-compose-api.yml -p repo up
 
 - En otra terminal, atención que el último EOF debe estar al comienzo de la línea:
@@ -295,6 +297,19 @@ Reejecutar el test
         TABLESPACE = pg_default
         CONNECTION LIMIT = -1;
       EOF
+
 - Volver a la terminal 1 y reinicar docker:
   -     $ ^C
-  -     $ docker-compose -f ../TSIOT/docker-compose-api -p repo up
+  -     $ docker-compose -f docker-compose-api.yml -p repo up
+
+## Probar lo hecho
+
+- En otra terminal
+  -     $ cd SMAUEC
+  -     $ cd api_events; npm install; cd -
+  -     $ cd api_rules;  npm install; cd -
+  -     $ cd api_users;  npm install;
+  -     $ npm test
+  Esperamos que la mayor parte de los tests si no todos, pasen.
+
+
