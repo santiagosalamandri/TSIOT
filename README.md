@@ -220,15 +220,16 @@ Reejecutar el test
   -     $ sudo npm install -g newman
 
 - Configuración de AUT
-  Duda: para ejecutar los test hace falta que se ejecute **npm install** en cada api. ¿Si lo hiciera antes del build y copiara **node_modules**...?
+
+Duda: para ejecutar los test hace falta que se ejecute **npm install** en cada api. ¿Si lo hiciera antes del build y copiara **node_modules**...?
+
+Recordá usar contraseñas apropiadas.
 
   -     $ git clone https://github.com/cpantel/SMAUEC.git
   -     $ cd SMAUEC
 
         $ cat << EOF >.env
         POSTGRES_PASSWORD=12345602
-        PGADMIN_DEFAULT_EMAIL=admin
-        PGADMIN_DEFAULT_PASSWORD=12345601
         EOF
 
   -     $ chmod 400 .env
@@ -239,6 +240,8 @@ Reejecutar el test
           secret: "secret-key"
         };
         EOF
+  -     $ chmod 400 auth.config.test.js
+    
 
   -     $ cp db.rule.config.test.js.template db.rule.config.test.js
   -     $ cp db.user.config.test.js.template db.user.config.test.js
@@ -267,13 +270,6 @@ Reejecutar el test
 - En otra terminal, atención que el último EOF debe estar al comienzo de la línea:
 
       $ cat << EOF | docker exec -i repo_postgres_1 psql -U postgres
-      CREATE ROLE smauec_prod WITH
-        LOGIN
-        NOSUPERUSER
-        INHERIT
-        NOCREATEDB
-        NOCREATEROLE
-        NOREPLICATION;
       CREATE ROLE smauec_test WITH
         LOGIN
         NOSUPERUSER
@@ -282,13 +278,6 @@ Reejecutar el test
         NOCREATEROLE
         NOREPLICATION
         ENCRYPTED PASSWORD 'md523d1028eeda62a632fe09998f10cbde4';
-      CREATE DATABASE smauec_prod WITH
-        OWNER = smauec_prod
-        ENCODING = 'UTF8'
-        LC_COLLATE = 'en_US.utf8'
-        LC_CTYPE = 'en_US.utf8'
-        TABLESPACE = pg_default
-        CONNECTION LIMIT = -1;
       CREATE DATABASE smauec_test WITH 
         OWNER = smauec_test
         ENCODING = 'UTF8'
