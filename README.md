@@ -161,7 +161,7 @@ Ahorra un GB pero luego hay que acceder desde una m√°quina que tenga entorno gr√
 
   -     $ cd ..
 - Iniciar docker
-  -     $ docker-compose up
+  -     $ docker-compose -f docker-compose-webdriver.yml up
 - En otra terminal
 
   -     $ cd selenium
