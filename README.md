@@ -223,19 +223,20 @@ Reejecutar el test
   -     $ git clone https://github.com/cpantel/SMAUEC.git
   -     $ cd SMAUEC
 
-      $ cat << EOF >.env
-      POSTGRES_PASSWORD=12345602
-      PGADMIN_DEFAULT_EMAIL=admin
-      PGADMIN_DEFAULT_PASSWORD=12345601
-      EOF
+        $ cat << EOF >.env
+        POSTGRES_PASSWORD=12345602
+        PGADMIN_DEFAULT_EMAIL=admin
+        PGADMIN_DEFAULT_PASSWORD=12345601
+        EOF
+
   -     $ chmod 400 .env
   -     $ cd secrets
 
-      $ cat << EOF > auth.config.test.js
-      module.exports = {
-        secret: "secret-key"
-      };
-      EOF
+        $ cat << EOF > auth.config.test.js
+        module.exports = {
+          secret: "secret-key"
+        };
+        EOF
 
   -     $ cp db.rule.config.test.js.template db.rule.config.test.js
   -     $ cp db.user.config.test.js.template db.user.config.test.js
@@ -257,13 +258,13 @@ Reejecutar el test
 
 
 
-  - Iniciar docker
+- Iniciar docker
   -     $ cp ../TSIOT/docker-compose-api.yml
   -     $ docker-compose -f docker-compose-api.yml -p repo up
 
-  En otra terminal, atención que el último EOF debe estar al comienzo de la línea:
-  -    $ cat << EOF | docker exec -i repo_postgres_1 psql -U postgres
+- En otra terminal, atención que el último EOF debe estar al comienzo de la línea:
 
+      $ cat << EOF | docker exec -i repo_postgres_1 psql -U postgres
       CREATE ROLE smauec_prod WITH
         LOGIN
         NOSUPERUSER
@@ -271,7 +272,6 @@ Reejecutar el test
         NOCREATEDB
         NOCREATEROLE
         NOREPLICATION;
-
       CREATE ROLE smauec_test WITH
         LOGIN
         NOSUPERUSER
@@ -280,29 +280,21 @@ Reejecutar el test
         NOCREATEROLE
         NOREPLICATION
         ENCRYPTED PASSWORD 'md523d1028eeda62a632fe09998f10cbde4';
-
-      CREATE DATABASE smauec_prod
-        WITH
-          OWNER = smauec_prod
-          ENCODING = 'UTF8'
-          LC_COLLATE = 'en_US.utf8'
-          LC_CTYPE = 'en_US.utf8'
-          TABLESPACE = pg_default
-          CONNECTION LIMIT = -1;
-
-      CREATE DATABASE smauec_test
-        WITH 
-          OWNER = smauec_test
-          ENCODING = 'UTF8'
-          LC_COLLATE = 'en_US.utf8'
-          LC_CTYPE = 'en_US.utf8'
-          TABLESPACE = pg_default
-          CONNECTION LIMIT = -1;
-EOF
-  - Volver a la terminal 1
-  -     ^C
-  
-   
-  - Reiniciar docker
+      CREATE DATABASE smauec_prod WITH
+        OWNER = smauec_prod
+        ENCODING = 'UTF8'
+        LC_COLLATE = 'en_US.utf8'
+        LC_CTYPE = 'en_US.utf8'
+        TABLESPACE = pg_default
+        CONNECTION LIMIT = -1;
+      CREATE DATABASE smauec_test WITH 
+        OWNER = smauec_test
+        ENCODING = 'UTF8'
+        LC_COLLATE = 'en_US.utf8'
+        LC_CTYPE = 'en_US.utf8'
+        TABLESPACE = pg_default
+        CONNECTION LIMIT = -1;
+      EOF
+- Volver a la terminal 1 y reinicar docker:
+  -     $ ^C
   -     $ docker-compose -f ../TSIOT/docker-compose-api -p repo up
-
