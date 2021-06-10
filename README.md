@@ -300,5 +300,37 @@ Recordá usar contraseñas apropiadas.
   -     $ cd api_users;  npm install;
   -     $ npm test
   Esperamos que la mayor parte de los tests si no todos, pasen.
+  
+# Herramientas de seguridad
+## Wireshark  
+- $ sudo apt install wireshark nmap testssl.sh
+  Shoud non-superusers be able to capture packets? -> <Yes>
+  
+- $ sudo addgroup "$USER" wireshark
 
+  logout/login
+
+## wordpress
+
+### Opción: Linux Mint
+- $ sudo apt install ruby-dev
+
+### Opción: Ubuntu 20.x
+- $ sudo apt install ruby-dev ubuntu-dev-tools
+- $ sudo gem install wpscan
+
+## burpsuite
+- https://portswigger.net/burp/releases/download?product=community&version=2021.5.1&type=Linux
+- $ sh burpsuite_community_linux_v2021_5_1.sh
+
+
+## zap proxy
+https://github.com/zaproxy/zaproxy/releases/download/v2.10.0/ZAP_2_10_0_unix.sh
+- $ sudo sh ZAP_2_10_0_unix.sh
+
+## ejecuciones
+
+- $ wpscan --url https://www.angrybirds.com
+
+- $ testssl https://sensor
 
