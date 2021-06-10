@@ -335,6 +335,8 @@ https://github.com/zaproxy/zaproxy/releases/download/v2.10.0/ZAP_2_10_0_unix.sh
 - $ testssl https://sensor
 
 ## Sonarqube
+
+### server
  
 - $ docker pull sonarqube
 - $ docker run -d --name sonarqube -e SONAR_ES_BOOTSTRAP_CHECKS_DISABLE=true -p 9000:9000 sonarqube:latest
@@ -346,3 +348,5 @@ tomar nota del token de login
   -Dsonar.host.url=http://localhost:9000 \
   -Dsonar.login=$TOKEN
  
+ ### client
+ https://docs.sonarqube.org/latest/analysis/scan/sonarscanner/
