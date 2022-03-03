@@ -2,7 +2,7 @@
 
 ## Descripción
 
-Mostraré cómo se puede armar un entorno de test de comportamiento de páginas web desplegadas en distintos sitios utilizando linux, docker, docker-compose, nginx, openSSL,  node, express, html, javascript, ruby, selenium y wireshark. Sirve para probar en ambientes previos código productivo sin modificarlo en absoluto, basta de if (desa), a sniffear el tráfico TLS y mockear toda la Internet si hace falta.
+Veremos cómo se puede armar un entorno de test de comportamiento de páginas web desplegadas en distintos sitios utilizando linux, docker, docker-compose, nginx, openSSL,  node, express, html, javascript, ruby, selenium y wireshark. Sirve para probar en ambientes previos código productivo sin modificarlo en absoluto, basta de if (desa), a sniffear el tráfico TLS y mockear toda la Internet si hace falta.
 
 ## Requisitos
 Conocimiento superficial de docker, node, html y javascript o mucha curiosidad.
@@ -12,42 +12,59 @@ Para la instalación le he dado los siguientes recursos y luego para operar los 
 
  - 4 CPUs -> (1 CPU)
  - PAE/NX
+ - Network: Bridged Adapter
  - 16GB RAM -> ( 4GB, quizás 2Gb)
  - disco de 30GB -> (12 GB)
 
-Puede ser útil o necesario instalar las gues additions en el caso de usar VirtualBox
 
- - Conectar devices->guest additions
- - abrir terminal en cd
- - sudo sh VBoxLinuxAdditions.run
- - reboot
+.
 
-Las instrucciones para la instalación de docker fueron tomadas  de https://docs.docker.com/install/linux/docker-ce/ubuntu/, en caso de usar Linux Mint 19 reemplazar "focal stable" con "bionic stable".
 
-Las instrucciones para la instalación de node fueron tomadas de 
-- https://nodejs.org/en/download/
-- https://nodejs.org/en/download/package-manager/#debian-and-ubuntu-based-linux-distributions-enterprise-linux-fedora-and-snap-packages
-- https://github.com/nodesource/distributions/blob/master/README.md 
 
 
 ## Instalación sistema operativo
-### Opción: Linux Mint 20 Mate
 
-- Tras la instalación, eliminar todas las aplicaciones superfluas (casi 1G5) usando botón derecho sobre el link en el menú
-  - celluloid
-  - pix
-  - thunderbird
-  - transmission
-  - rhythmbox
-- Eliminar libreoffice
+### Ubuntu Server 20.04
 
-  -      $ sudo apt --autoremove libreoffice-common
+ - cuando ofrece instalar openssh server, aceptarlo
+ - cuando ofrece "Featured Server Snaps", elegir docker
+ - si se queda para siempre en "downloading and installing security updates", cancelar y reboot
 
-- Upgrade e instalación de algunas herramientas útiles
-  -     $ sudo apt update
-  -     $ sudo apt upgrade
-  -     $ sudo apt clean
-  -     $ sudo apt install vim tree openssh-server dirdiff git shunit2
+#### Opción: Instalar entorno gráfico
+ - $ sudo apt install xorg openbox
+
+#### Opción: No instalar entorno gráfico
+
+Ahorra cerca de 1 GB pero luego hay que acceder desde una máquina que tenga entorno gráfico con:
+ - $ ssh -X tsiot@IP.IP.IP.IP
+
+
+
+#### Pasos comunes Ubuntu Server
+ - $ sudo apt install firefox tree dirdiff git shunit2
+ - $ sudo groupadd docker
+ - $ sudo usermod -aG docker ${USER}
+ - $ sudo chmod 666 /var/run/docker.sock
+ - $ sudo reboot
+  
+  
+#### Guest Additions
+
+Puede ser útil o necesario instalar las guest additions en el caso de usar VirtualBox para el clipboard compartido. No hace falta para el ajuste automático del tamaño de pantalla.
+
+
+ - sudo apt install gcc make perl
+ - Devices -> Insert guest additions CD image...
+ - abrir terminal en /media/tsiot/VBox_GA*
+ - sudo sh VBoxLinuxAdditions.run
+ - paciencia...
+ - reboot
+ 
+
+#### Instalación de docker según su manual 2021
+
+Las instrucciones para la instalación de docker fueron tomadas  de https://docs.docker.com/install/linux/docker-ce/ubuntu/, en caso de usar Linux Mint 19 reemplazar "focal stable" con "bionic stable"
+
 
 - Instalación de docker según su manual
   -     $ sudo apt remove docker docker-engine docker.io containerd runc
@@ -60,28 +77,22 @@ Las instrucciones para la instalación de node fueron tomadas de
   -     $ sudo setcap CAP_NET_BIND_SERVICE=+eip /usr/bin/dockerd
   -     $ sudo reboot
 
-### Opción: Ubuntu Server 20.04
-- cuando ofrece "Featured Server Snaps", elegir docker
-#### Subopción: Instalar entorno gráfico
-  -     $ sudo apt install xorg openbox
 
-#### Subopción: No instalar entorno gráfico
-Ahorra un GB pero luego hay que acceder desde una máquina que tenga entorno gráfico con:
- -     $ ssh -X tsiot@IP
-
-
-
-#### Pasos comunes Ubuntu Server
--     $ sudo apt install  firefox
--     $ sudo groupadd docker
--     $ sudo usermod -aG docker ${USER}
--     $ sudo chmod 666 /var/run/docker.sock
--     $ sudo reboot
 
 ## Instalaciones y configuraciones adicionales
 
+
+Las instrucciones para la instalación de node fueron tomadas de
+ 
+ - https://nodejs.org/en/download/
+ - https://nodejs.org/en/download/package-manager/#debian-and-ubuntu-based-linux-distributions-enterprise-linux-fedora-and-snap-packages
+ - https://github.com/nodesource/distributions/blob/master/README.md 
+ 
+
+ 
+
 - Instalación node js
-  -     $ curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
+  -     $ curl -sL https://deb.nodesource.com/setup_17.x | sudo -E bash -
   -     $ sudo apt install nodejs
 
 - Setup para pruebas con Selenium
@@ -91,6 +102,7 @@ Ahorra un GB pero luego hay que acceder desde una máquina que tenga entorno gr�
       127.0.0.1       sitio2
       127.0.0.1       sensor
       EOF
+
 - Alias cómodo para git
 
       $ cat << EOF > ~/.gitconfig
@@ -142,22 +154,27 @@ Ahorra un GB pero luego hay que acceder desde una máquina que tenga entorno gr�
 
   -     $ openssl ca -md sha256 -out "sensor-cert.pem" -config ./openssl.cnf -infiles "sensor-req.pem"
   Ingresar el password, yes, yes
+
+
+  
+- Copiar certificados a los sitios
+
+  -     $ cp sitio1-cert.pem sitio2-cert.pem sensor-cert.pem private/sitio1-key.pem private/sitio2-key.pem private/sensor-key.pem ../sites/certs/
+
   -     $ cd ../sensors
+
   Si no hubieras hecho el git clone, tendrías que haber ejecutado los comandos comentados, pero ya están en el package.json
   -     $ #npm init
   -     $ #npm install express --save
   -     $ npm install
-- Copiar certificados a los sitios
-  -     $ cd ../sslcerts
 
-  -     $ cp sitio1-cert.pem sitio2-cert.pem sensor-cert.pem private/sitio1-key.pem private/sitio2-key.pem private/sensor-key.pem ../sites/certs/
-
-  -     $ cd ../sites
 - Construir imagenes
-  -     $ docker build -t testbench/static:0.0.1 .
-  -     $ cd ../sensors
 
   -     $ docker build -t testbench/dynamic:0.0.1 .
+
+  -     $ cd ../sites
+
+  -     $ docker build -t testbench/static:0.0.1 .
 
   -     $ cd ..
 - Iniciar docker
@@ -174,6 +191,9 @@ Ahorra un GB pero luego hay que acceder desde una máquina que tenga entorno gr�
   -     $ #npm install --save selenium-webdriver
   -     $ #npm install --save firefox-profile
   -     $ npm install
+  -     
+  -     
+  -     ver si npm audit fix / --force
 
 ## Probar lo hecho
 - Acceso a los sites
@@ -185,6 +205,8 @@ Ahorra un GB pero luego hay que acceder desde una máquina que tenga entorno gr�
   -     <title>Sitio de prueba</title>
 
 - Ejecutar firefox para que cree los perfiles y cerrarlo
+- obtener PERFIL con 
+- basename $( ls /home/tsiot/.mozilla/firefox/*default-release -d )
   - corregir profilePath en test.js
   - eliminar /home/tsiot/.mozilla/firefox/?????.default-release/lock
   - para elegir el perfil de firefox: **firefox -no-remote -profileManager**
@@ -205,6 +227,8 @@ Ahorra un GB pero luego hay que acceder desde una máquina que tenga entorno gr�
   - en los bookmarks tenés las urls necesarias
 
 Reejecutar el test
+
+  -     eliminar /home/tsiot/.mozilla/firefox/?????.default-release/lock
   -     $ npm test
 
 # Testeo API con postman
