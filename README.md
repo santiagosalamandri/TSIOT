@@ -17,15 +17,12 @@ Para la instalación le he dado los siguientes recursos y luego para operar los 
  - disco de 30GB -> (12 GB)
 
 
-.
 
-
-
-
-## Instalación sistema operativo
+## Instalación del sistema operativo
 
 ### Ubuntu Server 20.04
 
+ - https://ubuntu.com/download/server
  - cuando ofrece instalar openssh server, aceptarlo
  - cuando ofrece "Featured Server Snaps", elegir docker
  - si se queda para siempre en "downloading and installing security updates", cancelar y reboot
@@ -58,10 +55,10 @@ Puede ser útil o necesario instalar las guest additions en el caso de usar Virt
  - abrir terminal en /media/tsiot/VBox_GA*
  - sudo sh VBoxLinuxAdditions.run
  - paciencia...
- - reboot
+ - sudo reboot
  
 
-#### Instalación de docker según su manual 2021
+#### [opcional] Instalación de docker según su manual 2021
 
 Las instrucciones para la instalación de docker fueron tomadas  de https://docs.docker.com/install/linux/docker-ce/ubuntu/, en caso de usar Linux Mint 19 reemplazar "focal stable" con "bionic stable"
 
