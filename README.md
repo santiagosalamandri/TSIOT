@@ -38,11 +38,11 @@ Ahorra cerca de 1 GB pero luego hay que acceder desde una máquina que tenga ent
 
 
 #### Pasos comunes Ubuntu Server
- - $ sudo apt install firefox tree dirdiff git shunit2
- - $ sudo groupadd docker
- - $ sudo usermod -aG docker ${USER}
- - $ sudo chmod 666 /var/run/docker.sock
- - $ sudo reboot
+      $ sudo apt install firefox tree dirdiff git shunit2
+      $ sudo groupadd docker
+      $ sudo usermod -aG docker ${USER}
+      $ sudo chmod 666 /var/run/docker.sock
+      $ sudo reboot
   
   
 #### Guest Additions
@@ -50,12 +50,12 @@ Ahorra cerca de 1 GB pero luego hay que acceder desde una máquina que tenga ent
 Puede ser útil o necesario instalar las guest additions en el caso de usar VirtualBox para el clipboard compartido. No hace falta para el ajuste automático del tamaño de pantalla.
 
 
- - sudo apt install gcc make perl
- - Devices -> Insert guest additions CD image...
- - abrir terminal en /media/tsiot/VBox_GA*
- - sudo sh VBoxLinuxAdditions.run
- - paciencia...
- - sudo reboot
+      $ sudo apt install gcc make perl
+      Devices -> Insert guest additions CD image...
+      abrir terminal en /media/tsiot/VBox_GA*
+      $ sudo sh VBoxLinuxAdditions.run
+      paciencia...
+      $ sudo reboot
  
 
 #### [opcional] Instalación de docker según su manual 2021
@@ -64,15 +64,16 @@ Las instrucciones para la instalación de docker fueron tomadas  de https://docs
 
 
 - Instalación de docker según su manual
-  -     $ sudo apt remove docker docker-engine docker.io containerd runc
-  -     $ sudo apt install apt-transport-https ca-certificates curl gnupg-agent software-properties-common
-  -     $ curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-  -     $ sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable"
-  -     $ sudo apt update
-  -     $ sudo apt install docker-ce docker-ce-cli containerd.io docker-compose
-  -     $ sudo addgroup "$USER" docker
-  -     $ sudo setcap CAP_NET_BIND_SERVICE=+eip /usr/bin/dockerd
-  -     $ sudo reboot
+
+      $ sudo apt remove docker docker-engine docker.io containerd runc
+      $ sudo apt install apt-transport-https ca-certificates curl gnupg-agent software-properties-common
+      $ curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+      $ sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable"
+      $ sudo apt update
+      $ sudo apt install docker-ce docker-ce-cli containerd.io docker-compose
+      $ sudo addgroup "$USER" docker
+      $ sudo setcap CAP_NET_BIND_SERVICE=+eip /usr/bin/dockerd
+      $ sudo reboot
 
 
 
@@ -89,8 +90,9 @@ Las instrucciones para la instalación de node fueron tomadas de
  
 
 - Instalación node js
-  -     $ curl -sL https://deb.nodesource.com/setup_17.x | sudo -E bash -
-  -     $ sudo apt install nodejs
+
+      $ curl -sL https://deb.nodesource.com/setup_17.x | sudo -E bash -
+      $ sudo apt install nodejs
 
 - Setup para pruebas con Selenium
 
@@ -108,98 +110,111 @@ Las instrucciones para la instalación de node fueron tomadas de
             lola = log --graph --decorate --pretty=oneline --abbrev-commit --all
             lolg = log --graph --decorate --pretty=format:'%Cgreen %ci %Cblue %h %Cred %d %Creset %s'
       EOF
+      
 - Obtener el proyecto
-  -     $git clone https://github.com/cpantel/TSIOT.git
+ 
+      $ git clone https://github.com/cpantel/TSIOT.git
 
   Si no hubieras hecho el git clone, tendrías que haber ejecutado los comandos comentados.
-  -     $ #mkdir sslcert
-  -     $ #chmod 0700 sslcert
-  -     $ #cd sslcert/
-  -     $ #mkdir certs private newcerts
-  -     $ #echo '100001' > serial
-  -     $ #touch certindex.txt
+  
+      $ #mkdir sslcert
+      $ #chmod 0700 sslcert
+      $ #cd sslcert/
+      $ #mkdir certs private newcerts
+      $ #echo '100001' > serial
+      $ #touch certindex.txt
 
 
 - Generar certificados
-  -     $ cd TSIOT
-  -     $ chmod 0700 sslcert
-  -     $ cd sslcert
-  -     $ openssl req -new -x509 -extensions v3_ca -keyout private/seleniumCAkey.pem -out seleniumCAcert.pem -days 365 -config ./openssl.cnf
-  Elegir un password 4x8mslRQ7Z
+ 
+      $ cd TSIOT
+      $ chmod 0700 sslcert
+      $ cd sslcert
+      $ openssl req -new -x509 -extensions v3_ca -keyout private/seleniumCAkey.pem -out seleniumCAcert.pem -days 365 -config ./openssl.cnf
+
+Elegir un password 4x8mslRQ7Z
 
   **Precaución: no usar este password pues aunque el riesgo es bajo, permite firmar certificados en los que luego el sistema va a confiar.**
 
   Resto enter o a gusto
-  -     $ openssl req -new -nodes -out "sitio1-req.pem" -keyout "private/sitio1-key.pem" -config ./openssl.cnf
+  
+      $ openssl req -new -nodes -out "sitio1-req.pem" -keyout "private/sitio1-key.pem" -config ./openssl.cnf
+      
   Common Name -> sitio1
 
   Resto enter
 
-  -     $ openssl req -new -nodes -out "sitio2-req.pem" -keyout "private/sitio2-key.pem" -config ./openssl.cnf
+      $ openssl req -new -nodes -out "sitio2-req.pem" -keyout "private/sitio2-key.pem" -config ./openssl.cnf
+  
   Common Name -> sitio2
 
   Resto enter
 
-  -     $ openssl req -new -nodes -out "sensor-req.pem" -keyout "private/sensor-key.pem" -config ./openssl.cnf
+      $ openssl req -new -nodes -out "sensor-req.pem" -keyout "private/sensor-key.pem" -config ./openssl.cnf
+
   Common Name -> sensor, resto enter
 
-  -     $ openssl ca -md sha256 -out "sitio1-cert.pem" -config ./openssl.cnf -infiles "sitio1-req.pem"
+      $ openssl ca -md sha256 -out "sitio1-cert.pem" -config ./openssl.cnf -infiles "sitio1-req.pem"
+  
   Ingresar el password, yes, yes
 
-  -     $ openssl ca -md sha256 -out "sitio2-cert.pem" -config ./openssl.cnf -infiles "sitio2-req.pem"
+      $ openssl ca -md sha256 -out "sitio2-cert.pem" -config ./openssl.cnf -infiles "sitio2-req.pem"
+  
   Ingresar el password, yes, yes
 
-  -     $ openssl ca -md sha256 -out "sensor-cert.pem" -config ./openssl.cnf -infiles "sensor-req.pem"
+      $ openssl ca -md sha256 -out "sensor-cert.pem" -config ./openssl.cnf -infiles "sensor-req.pem"
+  
   Ingresar el password, yes, yes
-
 
   
 - Copiar certificados a los sitios
 
-  -     $ cp sitio1-cert.pem sitio2-cert.pem sensor-cert.pem private/sitio1-key.pem private/sitio2-key.pem private/sensor-key.pem ../sites/certs/
+      $ cp sitio1-cert.pem sitio2-cert.pem sensor-cert.pem private/sitio1-key.pem private/sitio2-key.pem private/sensor-key.pem ../sites/certs/
 
-  -     $ cd ../sensors
+      $ cd ../sensors
 
   Si no hubieras hecho el git clone, tendrías que haber ejecutado los comandos comentados, pero ya están en el package.json
-  -     $ #npm init
-  -     $ #npm install express --save
-  -     $ npm install
+  
+      $ #npm init
+      $ #npm install express --save
+      $ npm install
 
 - Construir imagenes
 
-  -     $ docker build -t testbench/dynamic:0.0.1 .
-
-  -     $ cd ../sites
-
-  -     $ docker build -t testbench/static:0.0.1 .
-
-  -     $ cd ..
+      $ docker build -t testbench/dynamic:0.0.1 .
+      $ cd ../sites
+      $ docker build -t testbench/static:0.0.1 .
+      $ cd ..
+      
 - Iniciar docker
-  -     $ docker-compose -f docker-compose-webdriver.yml up
+
+      $ docker-compose -f docker-compose-webdriver.yml up
+
 - En otra terminal
 
-  -     $ cd selenium
+      $ cd selenium
 
   Si no hubieras hecho el git clone, tendrías que haber ejecutado los comandos comentados, pero ya están en el package.json
-  -     $ #npm init
-  -     $ #npm install --save mocha
-  -     $ #npm install --save chai
-  -     $ #npm install --save geckodriver
-  -     $ #npm install --save selenium-webdriver
-  -     $ #npm install --save firefox-profile
-  -     $ npm install
-  -     
-  -     
-  -     ver si npm audit fix / --force
+  
+      $ #npm init
+      $ #npm install --save mocha
+      $ #npm install --save chai
+      $ #npm install --save geckodriver
+      $ #npm install --save selenium-webdriver
+      $ #npm install --save firefox-profile
+      $ npm install
+      
+      
+  -Acá te debo un npm audit fix / --force
 
 ## Probar lo hecho
 - Acceso a los sites
-  -     $ wget --no-check-certificate -O- https://sensor/hitcount 2>/dev/null | grep div
-  Esperamos:
-  -     <div id="count">-1</div>
-  -     $ wget --no-check-certificate -O- https://sitio2 2>/dev/null | grep title
-  Esperamos:
-  -     <title>Sitio de prueba</title>
+ 
+      $ wget --no-check-certificate -O- https://sensor/hitcount 2>/dev/null | grep div
+      <div id="count">-1</div>
+  
+      $ wget --no-check-certificate -O- https://sitio2 2>/dev/null | grep title
+      <title>Sitio de prueba</title>
 
 - Ejecutar firefox para que cree los perfiles y cerrarlo
 - obtener PERFIL con 
@@ -210,7 +225,7 @@ Las instrucciones para la instalación de node fueron tomadas de
 
 
 - Ejecutar el test, va a fallar por falta de CA
-  -     $ npm test
+      $ npm test
 
 - Agregar seleniumCAkey.pem a firefox
   - about:preferences
@@ -225,70 +240,74 @@ Las instrucciones para la instalación de node fueron tomadas de
 
 Reejecutar el test
 
-  -     eliminar /home/tsiot/.mozilla/firefox/?????.default-release/lock
-  -     $ npm test
+      rm /home/tsiot/.mozilla/firefox/?????.default-release/lock
+      $ npm test
 
 # Testeo API con postman
 
 - Instalación postman
-  -     $ cd
-  - Descargar Postman
-    - https://www.postman.com/downloads/
-  -     $ mkdir bin
-  -     $ cd bin
-  -     $ tar -xzf ~/Downloads/Postman-linux-x64-8.5.1.tar.gz
-  -     $ cd ..
-  -     $ sudo npm install -g newman
 
-- Configuración de AUT
+      $ cd
 
-Duda: para ejecutar los test hace falta que se ejecute **npm install** en cada api. ¿Si lo hiciera antes del build y copiara **node_modules**...?
+- Descargar Postman de https://www.postman.com/downloads/
 
-Recordá usar contraseñas apropiadas.
+      $ mkdir bin
+      $ cd bin
+      $ tar -xzf ~/Downloads/Postman-linux-x64-x.x.x.tar.gz
+      $ cd ..
+      $ sudo npm install -g newman
 
-  -     $ git clone https://github.com/cpantel/SMAUEC.git
-  -     $ cd SMAUEC
+- Resolver nombres
 
-        $ cat << EOF >.env
-        POSTGRES_PASSWORD=12345602
-        EOF
+     $ cat << EOF | sudo tee --append /etc/hosts > /dev/null
+     127.0.0.1     api-users.smauec.net
+     EOF
 
-  -     $ chmod 400 .env
-  -     $ cd secrets
 
-        $ cat << EOF > auth.config.test.js
-        module.exports = {
-          secret: "secret-key"
-        };
-        EOF
-  -     $ chmod 400 auth.config.test.js
+- Clonar proyecto referencia
+ 
+      $ git clone https://github.com/cpantel/SMAUEC.git
+      $ cd SMAUEC
+
+      $ cat << EOF >.env
+      POSTGRES_PASSWORD=12345602
+      EOF
+
+      $ chmod 400 .env
+      $ pushd secrets
+
+      $ cat << EOF > auth.config.test.js
+      module.exports = {
+        secret: "secret-key"
+      };
+      EOF
+
+      $ chmod 400 auth.config.test.js
     
+      $ cp db.rule.config.test.js.template db.rule.config.test.js
+      $ cp db.user.config.test.js.template db.user.config.test.js
+      $ cp user.admin.config.test.js.template user.admin.config.test.js
+      $ popd
 
-  -     $ cp db.rule.config.test.js.template db.rule.config.test.js
-  -     $ cp db.user.config.test.js.template db.user.config.test.js
-  -     $ cp user.admin.config.test.js.template user.admin.config.test.js
-  -     $ cd ..
-
-  -     $ cd docker/containers/proxy    ; docker build -t smauec/proxy:0.0.1 .      ; cd -
-  -     $ cd docker/containers/postgres ; docker build -t smauec/postgres:0.0.1 .   ; cd -
-  -     $ cd docker/containers/mongo    ; docker build -t smauec/mongo:0.0.1 .      ; cd -
-  -     $ cd docker/containers/node     ; docker build -t smauec/node:0.0.1 .       ; cd -
-  -     $ cd api_events                 ; docker build -t smauec/api-events:0.0.1 . ; cd -
-  -     $ cd api_rules                  ; docker build -t smauec/api-rules:0.0.1 .  ; cd -
-  -     $ cd api_users                  ; docker build -t smauec/api-users:0.0.1 .  ; cd -
-  -     $ cd odata                      ; docker build -t smauec/odata:0.0.1 .      ; cd -
-  -     $ #cd docker/containers/broker   ; docker build -t smauec/broker:0.0.1 .     ; cd -
-  -     $ #cd docker/containers/pgadmin  ; docker build -t smauec/pgadmin:0.0.1 .    ; cd -
+      $ pushd docker/containers/proxy    ; docker build -t smauec/proxy:0.0.1 .      ; popd
+      $ pushd docker/containers/postgres ; docker build -t smauec/postgres:0.0.1 .   ; popd
+      $ pushd docker/containers/mongo    ; docker build -t smauec/mongo:0.0.1 .      ; popd
+      $ pushd docker/containers/node     ; docker build -t smauec/node:0.0.1 .       ; popd
+      $ pushd api_events                 ; docker build -t smauec/api-events:0.0.1 . ; popd
+      $ pushd api_rules                  ; docker build -t smauec/api-rules:0.0.1 .  ; popd
+      $ pushd api_users                  ; docker build -t smauec/api-users:0.0.1 .  ; popd
+      $ pushd odata                      ; docker build -t smauec/odata:0.0.1 .      ; popd
+      $ #pushd docker/containers/broker   ; docker build -t smauec/broker:0.0.1 .     ; popd
+      $ #pushd docker/containers/pgadmin  ; docker build -t smauec/pgadmin:0.0.1 .    ; popd
 
   Borrar de **proxy/default.conf** las secciones server correspondientes a los **server_name** **pgadmin.smauec.net** y **www.smauec.net**
 
-
-
 - Iniciar docker
-  -     $ cp ../TSIOT/docker-compose-api.yml .
-  -     $ docker-compose -f docker-compose-api.yml -p repo up
+ 
+      $ cp ../TSIOT/docker-compose-api.yml .
+      $ docker-compose -f docker-compose-api.yml -p repo up
 
-- En otra terminal, atención que el último EOF debe estar al comienzo de la línea:
+- En otra terminal
 
       $ cat << EOF | docker exec -i repo_postgres_1 psql -U postgres
       CREATE ROLE smauec_test WITH
@@ -308,19 +327,34 @@ Recordá usar contraseñas apropiadas.
         CONNECTION LIMIT = -1;
       EOF
 
+- Debe devolver
+
+      CREATE ROLE
+      CREATE DATABASE
+
+
 - Volver a la terminal 1 y reinicar docker:
-  -     $ ^C
-  -     $ docker-compose -f docker-compose-api.yml -p repo up
+
+      $ ^C
+      $ docker-compose -f docker-compose-api.yml -p repo up
+
+
 
 ## Probar lo hecho
 
 - En otra terminal
-  -     $ cd SMAUEC
-  -     $ cd api_events; npm install; cd -
-  -     $ cd api_rules;  npm install; cd -
-  -     $ cd api_users;  npm install;
-  -     $ npm test
-  Esperamos que la mayor parte de los tests si no todos, pasen.
+ 
+      $ cd SMAUEC
+      $ pushd api_events; npm install; popd
+      $ pushd api_rules;  npm install; popd
+      $ pushd api_users;  npm install
+      $ npm test
+
+Esperamos que la mayor parte de los tests si no todos, pasen.
+  
+- De ahora en mas, el sistema se inicia con sólo ejecutar
+
+    docker-compose -f docker-compose-api.yml -p repo up
   
 # Herramientas de seguridad
 ## Wireshark  
