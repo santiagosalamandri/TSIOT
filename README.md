@@ -357,37 +357,70 @@ Esperamos que la mayor parte de los tests si no todos, pasen.
     docker-compose -f docker-compose-api.yml -p repo up
   
 # Herramientas de seguridad
-## Wireshark  
+
+## wireshark
+
+- $ sudo apt update
 - $ sudo apt install wireshark nmap testssl.sh
-  Shoud non-superusers be able to capture packets? -> <Yes>
+
+  Shoud non-superusers be able to capture packets? -> Yes
   
 - $ sudo addgroup "$USER" wireshark
 
   logout/login
+  
+  Para probar, 
+  
+- $ wireshark
+  
+  debe ofrecer capturar en todas las interfaces.
 
-## wordpress
+## wpscan
 
-### Opción: Linux Mint
-- $ sudo apt install ruby-dev
-
-### Opción: Ubuntu 20.x
 - $ sudo apt install ruby-dev ubuntu-dev-tools
 - $ sudo gem install wpscan
 
-## burpsuite
-- https://portswigger.net/burp/releases/download?product=community&version=2021.5.1&type=Linux
-- $ sh burpsuite_community_linux_v2021_5_1.sh
+   Para probar
+  
+- $ wpscan --help
+  
+  debe emitir opciones de ayuda.
 
+## burpsuite
+
+- https://portswigger.net/burp/releases
+- Elegir stable, Community, Linux 64-bit
+- $ sh burpsuite_community_linux_v202X_X_X.sh
+
+ Seguir los pasos, no crear symlinks pues sin sudo no se puede en /usr/
+
+ Para probar:
+ 
+ - $ cd ~/BurpSuiteCommunity
+ - $ ./BurpSuiteCommunity
+
+  Debe abrir algo
 
 ## zap proxy
-https://github.com/zaproxy/zaproxy/releases/download/v2.10.0/ZAP_2_10_0_unix.sh
-- $ sudo sh ZAP_2_10_0_unix.sh
+
+- https://github.com/zaproxy/zaproxy/releases
+- buscar hasta hallar un Lastest, ZAP_2.11.1_Linux.tar.gz  al 2022/03/16
+- $ tar -xf ZAP_2.11.1_Linux.tar.gz
+
+Para probar:
+
+- cd ZAP_2.11.1
+- ./BurpSuiteCommunity/jre/bin/java -jar zap-2.11.1.jar
+
+ Debe abrir algo
 
 ## ejecuciones
 
 - $ wpscan --url https://www.angrybirds.com
 
 - $ testssl https://sensor
+
+# A confirmar...
 
 ## Sonarqube
 
