@@ -2,7 +2,7 @@ const {Builder, By, until, Key, Capabilities} = require('selenium-webdriver');
 const {expect} = require('chai');
 var firefox = require('selenium-webdriver/firefox');
 //var profilePath = '/home/tsiot/.mozilla/firefox/zoa6kvyg.default';
-var profilePath = '/home/tsiot/.mozilla/firefox/8297bw4u.default-release';
+var profilePath = '/home/santi/.mozilla/firefox/t4hi4k26.default-release';
 let TIMEOUT=10000;
 
 describe('test multi site with firefox', function() {
@@ -66,6 +66,16 @@ describe('test multi site with firefox', function() {
          expect(element.text).to.equal('Canario');  
       });
    });
+
+   it('check sensor multiply function', async function() {
+      this.timeout(12000);
+      await driver.get('https://sensor/reset');
+      await driver.get('https://sensor/multiply?num1=4&num2=3');
+      driver.findElement(By.id('mult')).then(element=>{
+         expect(element.text).to.equal('12');  
+      });
+   });
+
 
    after( () =>
       driver && driver.quit()

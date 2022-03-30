@@ -43,6 +43,20 @@ app.post('/cargar_datos.php', function(req, res) {
 
 } )
 
+/*app.get('/multiply', function(req, res) {
+   ++count;
+   res.sendFile('multiply.html', { root: __dirname } ); console.log('multiply hit');
+
+} )
+*/
+app.get('/multiply', function(req, res) {
+   ++count;
+   
+   mult=req.query.num1*req.query.num2;
+   res.send(`<h1>El resultado de multiplicar ${req.query.num1} con ${req.query.num2} es:</> <h1 id="mult">${mult}</>` );
+    console.log('multiply hit');
+} )
+
 app.get('/imagen.png', function(req, res) {
    ++count;
    res.sendFile('gok.png', { root: __dirname } ); console.log('img hit');
