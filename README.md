@@ -33,6 +33,7 @@ Para la instalación le he dado los siguientes recursos y luego para operar los 
 #### Opción: No instalar entorno gráfico
 
 Ahorra cerca de 1 GB pero luego hay que acceder desde una máquina que tenga entorno gráfico con:
+
       ssh -X tsiot@IP.IP.IP.IP
 
 
@@ -57,10 +58,6 @@ Puede ser útil o necesario instalar las guest additions en el caso de usar Virt
       sudo reboot
  
 
-
-
-
-
 ## Instalaciones y configuraciones adicionales
 
 
@@ -71,7 +68,6 @@ Las instrucciones para la instalación de node fueron tomadas de
  - https://github.com/nodesource/distributions/blob/master/README.md 
  
 
- 
 
 - Instalación node js
 
@@ -109,51 +105,50 @@ Las instrucciones para la instalación de node fueron tomadas de
       #touch certindex.txt
 
 
-- Generar certificados
+- Generar e instalar certificados
+
+  - Generar CA
  
       cd TSIOT
       chmod 0700 sslcert
       cd sslcert
       openssl req -new -x509 -extensions v3_ca -keyout private/seleniumCAkey.pem -out seleniumCAcert.pem -days 365 -config ./openssl.cnf
+      #Elegir un password 4x8mslRQ7Z
+      #Resto enter o a gusto
 
-Elegir un password 4x8mslRQ7Z
+      **Precaución: no usar este password pues aunque el riesgo es bajo, permite firmar certificados en los que luego el sistema va a confiar.**
 
-  **Precaución: no usar este password pues aunque el riesgo es bajo, permite firmar certificados en los que luego el sistema va a confiar.**
-
-  Resto enter o a gusto
+  - Generar request de certificados
   
       openssl req -new -nodes -out "sitio1-req.pem" -keyout "private/sitio1-key.pem" -config ./openssl.cnf
-      
-  Common Name -> sitio1
-
-  Resto enter
+      #Common Name -> sitio1
+      #Resto enter
 
       openssl req -new -nodes -out "sitio2-req.pem" -keyout "private/sitio2-key.pem" -config ./openssl.cnf
-  
-  Common Name -> sitio2
-
-  Resto enter
+      #Common Name -> sitio2
+      #Resto enter
 
       openssl req -new -nodes -out "sensor-req.pem" -keyout "private/sensor-key.pem" -config ./openssl.cnf
+      #Common Name -> sensor
+      #Resto enter
 
-  Common Name -> sensor, resto enter
+  - Firmar certificados
 
       openssl ca -md sha256 -out "sitio1-cert.pem" -config ./openssl.cnf -infiles "sitio1-req.pem"
-  
-  Ingresar el password, yes, yes
+      #Ingresar el password, yes, yes
 
       openssl ca -md sha256 -out "sitio2-cert.pem" -config ./openssl.cnf -infiles "sitio2-req.pem"
-  
-  Ingresar el password, yes, yes
+      #Ingresar el password, yes, yes
 
       openssl ca -md sha256 -out "sensor-cert.pem" -config ./openssl.cnf -infiles "sensor-req.pem"
-  
-  Ingresar el password, yes, yes
+      #Ingresar el password, yes, yes
 
   
-- Copiar certificados a los sitios
+  - Copiar certificados a los sitios
 
       cp sitio1-cert.pem sitio2-cert.pem sensor-cert.pem private/sitio1-key.pem private/sitio2-key.pem private/sensor-key.pem ../sites/certs/
+
+- Activar sensores
 
       cd ../sensors
 
@@ -163,7 +158,7 @@ Elegir un password 4x8mslRQ7Z
       #npm install express --save
       npm install
 
-- Construir imagenes
+- Construir imagenes de los sitios
 
       docker build -t testbench/dynamic:0.0.1 .
       cd ../sites
@@ -192,19 +187,22 @@ Elegir un password 4x8mslRQ7Z
   -Acá te debo un npm audit fix / --force
 
 ## Probar lo hecho
+
 - Acceso a los sites
  
-      wget --no-check-certificate -O- https://sensor/hitcount 2>/dev/null | grep div
+    wget --no-check-certificate -O- https://sensor/hitcount 2>/dev/null | grep div
 
-  - Debe traer
+  Debe traer
    
-      \<div id="count">-1\</div>
-  
-      wget --no-check-certificate -O- https://sitio2 2>/dev/null | grep title
+  \<div id="count">-1\</div>
 
-  - Debe traer
+
+  wget --no-check-certificate -O- https://sitio2 2>/dev/null | grep title
+
+
+  Debe traer
    
-      \<title>Sitio de prueba\</title>
+  \<title>Sitio de prueba\</title>
 
 - Ejecutar firefox para que cree los perfiles y cerrarlo
 - obtener PERFIL con
@@ -235,6 +233,12 @@ Reejecutar el test
 
       rm /home/tsiot/.mozilla/firefox/?????.default-release/lock
       npm test
+
+Si hubieses tenido el error
+
+   TypeError: Cannot read properties of undefined (reading 'describe')
+   
+es porque pusiste *node test* en lugar de *npm test*   
 
 # Testeo API con postman
 
