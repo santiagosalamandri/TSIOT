@@ -67,7 +67,7 @@ describe('test multi site with firefox', function() {
       });
    });
 
-   it('check sensor multiply function', async function() {
+   it('check sensor multiply GET function', async function() {
       this.timeout(12000);
       await driver.get('https://sensor/reset');
       await driver.get('https://sensor/multiply?num1=4&num2=3');
@@ -76,6 +76,14 @@ describe('test multi site with firefox', function() {
       });
    });
 
+   it('check sensor multiply POST function', async function() {
+      this.timeout(12000);
+      await driver.get('https://sensor/reset');
+      await driver.get('https://sensor/multiply',data={"num1":3,"num2":4});
+      driver.findElement(By.id('mult')).then(element=>{
+         expect(element.text).to.equal('12');  
+      });
+   });
 
    after( () =>
       driver && driver.quit()

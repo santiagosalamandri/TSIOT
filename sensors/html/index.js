@@ -1,5 +1,9 @@
+
 const express = require('express')
 const app = express()
+
+app.use(express.json());
+app.use(express.urlencoded({extended:true}))
 
 const httpPort = 8080
 
@@ -55,6 +59,18 @@ app.get('/multiply', function(req, res) {
    mult=req.query.num1*req.query.num2;
    res.send(`<h1>El resultado de multiplicar ${req.query.num1} con ${req.query.num2} es:</> <h1 id="mult">${mult}</>` );
     console.log('multiply hit');
+} )
+
+app.post('/multiply', function(req, res) {
+   ++count;
+if(req.body.num1 !=undefined && req.body.num2!=undefined){
+   mult=req.body.num1*req.body.num2;
+   res.send(`<h1>El resultado de multiplicar ${req.body.num1} con ${req.body.num2} es:</> <h1 id="mult">${mult}</>` );
+    console.log('multiply hit');
+}
+else{
+res.send('error')
+}
 } )
 
 app.get('/imagen.png', function(req, res) {
