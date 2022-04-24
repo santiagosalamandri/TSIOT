@@ -4,6 +4,10 @@ var firefox = require('selenium-webdriver/firefox');
 //var profilePath = '/home/tsiot/.mozilla/firefox/zoa6kvyg.default';
 var profilePath = '/home/santi/.mozilla/firefox/t4hi4k26.default-release';
 let TIMEOUT=10000;
+var XMLHttpRequest = require('xhr2');
+
+process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = 0
+const https = require('https');
 
 describe('test multi site with firefox', function() {
    let driver;
@@ -78,11 +82,42 @@ describe('test multi site with firefox', function() {
 
    it('check sensor multiply POST function', async function() {
       this.timeout(12000);
-      await driver.get('https://sensor/reset');
-      await driver.get('https://sensor/multiply',data={"num1":3,"num2":4});
-      driver.findElement(By.id('mult')).then(element=>{
-         expect(element.text).to.equal('12');  
-      });
+	var postData = JSON.stringify({
+	    'num1' : 3,
+	    'num2' : 4
+	});
+
+
+	var options = {
+	  hostname: 'sensor',
+	  port: 443,
+	  path: '/multiply',
+	  method: 'POST',
+	  headers: {
+	       'Content-Type': 'application/json',
+	       'Content-Length': postData.length
+	     }
+	};
+
+	var req = https.request(options, (res) => {
+
+	  res.on('data', (d) => {	
+		process.stdout.write(d);
+		driver.get(d);
+		driver.findElement(By.id('mult')).then(element=>{
+		expect(element.text).to.equal('12');  
+	});
+	  });
+	});
+
+	req.on('error', (e) => {
+	  console.error(e);
+	});
+
+	req.write(postData);
+	req.end();
+
+
    });
 
    after( () =>
